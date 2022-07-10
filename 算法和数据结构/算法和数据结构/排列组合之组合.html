@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+<script>
+    let arr=['A','B','C'];
+    
+    function run(arr,layer){
+        let result=0;
+        let isNow=1;
+        let resStr=[];
+        let prev='';
+
+        function change(data,layerNum,str){
+            for(var i=0;i<data.length;i++){
+                let cloneData=data.concat();
+                let cloneStr=str;
+                cloneStr+=cloneData.splice(i,1);
+
+                if(layerNum==layer){
+                    result+=cloneData.length;
+                    for(var j=0;j<cloneData.length;j++){
+                        let tempStr=cloneData[j]+cloneStr;
+                        resStr.push(tempStr);
+                    }
+                }else{
+                    change(data,layerNum+1,cloneStr);
+                }
+            }
+        }
+        change(arr,isNow+1,'');
+
+        return resStr;
+    }
+
+    let res=run(arr,2);
+    
+    res=new Set(res.map(item=>{
+        return item.split('').sort().join('');
+    }));
+    console.log(res);
+</script>
+</html>

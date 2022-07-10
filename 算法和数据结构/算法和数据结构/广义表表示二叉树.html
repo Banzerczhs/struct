@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div></div>
+</body>
+<script>
+    function BinTreeNode(data){
+        this.data=data;
+        this.leftChild=null;    //左子树
+        this.rightChild=null;   //右子树
+        this.parentNode=null;   //父节点
+    }
+
+    function BinaryTree(){
+        let root=null;
+
+        this.initTree=function(token){
+            let stack=[];
+            let newNode=null;
+            let flag=0;     //用来标识当前遍历到左节点还是右节点。
+            for(let i=0;i<token.length;i++){
+                let item=token[i];
+                if(item=="#"){
+                    break;
+                }
+                if(item=="("){
+                    stack.push(newNode);
+                    flag=1;
+                }else if(item==","){
+                    flag=2;
+                }else if(item==")"){
+                    stack.pop();
+                }else{
+                    newNode=new BinTreeNode(item);
+                    if(!root){
+                        root=newNode;
+                    }else{
+                        let preventNode=stack[stack.length-1];
+                        if(flag==1){
+                            preventNode.leftChild=newNode;
+                        }else if(flag==2){
+                            preventNode.rightChild=newNode;
+                        }
+                        newNode.parentNode=preventNode;
+                    }
+                }
+            }
+        }
+
+        this.getRoot=function(){
+            return root;
+        }
+
+        //实现二叉树的中序遍历
+        this.inOrder=function(node){
+            if(!node){
+                return null;
+            }
+
+            this.inOrder(node.leftChild);
+            console.log(node.data);
+            this.inOrder(node.rightChild);
+        }
+
+        //二叉树前序遍历
+        this.inForward=function(node){
+            if(!node){
+                return null;
+            }
+
+            console.log(node.data);
+            this.inForward(node.leftChild);
+            this.inForward(node.rightChild);
+        }
+
+        //二叉树后序遍历
+        this.inBack=function(node){
+            if(!node){
+                return null;
+            }
+
+            this.inBack(node.leftChild);
+            this.inBack(node.rightChild);
+            console.log(node.data);
+        }
+
+        function getTreeNodeNum(node){
+            if(!node){
+                return 0;
+            }
+
+            return getTreeNodeNum(node.leftChild)+getTreeNodeNum(node.rightChild)+1;
+        }
+        
+        //获取树的节点数
+        this.size=function(node){
+            return getTreeNodeNum(node);
+        }
+
+        function treeHeight(node){
+            if(!node){
+                return 0;
+            }
+
+            let leftHeight=treeHeight(node.leftChild);
+            let rightHeight=treeHeight(node.rightChild);
+
+            if(leftHeight>rightHeight){
+                return leftHeight+1;
+            }else{
+                return rightHeight+1;
+            }
+        }
+
+        //获取树的高度
+        this.height=function(node){
+            return treeHeight(node);
+        }
+
+        //获取树的镜像
+        this.mirror=function(node){
+            if(!node){
+                return null;
+            }
+            
+            let tmp=node.leftChild;
+            node.leftChild=node.rightChild;
+            node.rightChild=tmp;
+
+            this.mirror(node.leftChild);
+            this.mirror(node.rightChild);
+        }
+
+        var result=null;
+        function findNode(node,data){
+            if(!node){
+                return null;
+            }
+            if(node.data===data){
+                result=node;
+            }
+
+            findNode(node.leftChild,data);
+            findNode(node.rightChild,data);
+        }
+
+        //查找树中的某个具体的节点
+        this.find=function(data){
+            if(root.data==data){
+                return root;
+            }
+            
+            findNode(root,data);
+            return result;
+        }
+    }
+
+    let tree=new BinaryTree();
+
+    tree.initTree('A(B(D,E(,I)),C(F,G(L,U)))#');
+
+
+    // console.log(tree.getRoot());
+    // tree.inBack(tree.getRoot());
+    // console.log(tree.size(tree.getRoot()));
+    // console.log(tree.height(tree.getRoot()));
+    // tree.inForward(tree.getRoot());
+    // tree.mirror(tree.getRoot());
+    // tree.inForward(tree.getRoot());
+    // console.log(tree.find('D'));
+
+    //上面我们实现的都是递归的遍历下面我们实现非递归的遍历方法。
+
+    //中序遍历
+    function inOrder(node){
+        if(!node){
+            return null;
+        }
+        let stack=[];
+        let curr_node=node;
+        while(curr_node){
+            if(curr_node.leftChild){
+                stack.push(curr_node);
+                curr_node=curr_node.leftChild;
+            }else if(curr_node.rightChild){
+                console.log(curr_node.data);
+                curr_node=curr_node.rightChild;
+            }else{
+                console.log(curr_node.data);
+                if(stack.length){
+                    while(stack.length){
+                        let root_node=stack.pop();
+                        console.log(root_node.data);
+                        curr_node=root_node.rightChild;
+                        if(curr_node){
+                            break;
+                        }
+                    }
+                }else{
+                    curr_node=null;
+                }
+            }
+        }
+    }
+
+    //前序遍历
+    function inForward(node){
+        if(!node){
+            return null;
+        }
+
+        let stack=[];
+        let curr_node=node;
+        while(curr_node){
+            console.log(curr_node.data);
+            if(curr_node.rightChild){
+                stack.push(curr_node.rightChild);
+            }
+
+            if(curr_node.leftChild){
+                curr_node=curr_node.leftChild;
+            }else{
+                curr_node=stack.pop();
+            }
+        }
+    }
+
+    //二叉树后序遍历
+    function inBack(node){
+        if(!node){
+            return null;
+        }
+
+        let stack=[];
+        let curr_node=node;
+        while(curr_node){
+            if(curr_node.leftChild){
+                stack.push(curr_node);
+                curr_node=curr_node.leftChild;
+            }else if(curr_node.rightChild){
+                stack.push(curr_node);
+                curr_node=curr_node.rightChild;
+            }else{
+                console.log(curr_node.data);
+                curr_node=stack.pop();
+                if(curr_node && curr_node.leftChild){
+                    curr_node.leftChild=null
+                }else if(curr_node && curr_node.rightChild){
+                    curr_node.rightChild=null;
+                }
+            }
+        }
+    }
+    
+    //最近公共祖先节点
+    function commonNearNode(root,node1,node2){
+        let stack=[];
+        let curr_node1=node1;
+        let curr_node2=node2;
+        let result=null;
+        if(curr_node1==curr_node2==root){
+            return root;
+        }
+
+        while(curr_node1&&root!==curr_node1){
+            stack.push(curr_node1);
+            curr_node1=curr_node1.parentNode;
+        }
+
+        while(curr_node2&&root!==curr_node2){
+            if(curr_node2.data==stack[stack.length-1].data){
+                result=curr_node2;
+                stack.pop();
+                break;
+            }
+            curr_node2=curr_node2.parentNode;
+        }
+
+        if(!result){
+            return root;
+        }else{
+            return result;
+        }
+    }
+
+    let node1=tree.find('D');
+    let node2=tree.find('G');
+    
+    // console.log(commonNearNode(tree.getRoot(),node1,node2));
+
+    //分层打印二叉树
+    function layeredTree(root){
+        if(!root){
+            return null;
+        }
+        
+        let result={
+            1 : new Set()
+        };
+        let stack=[];
+        let curr_node={layer : 1,node : root};
+        while(curr_node&&curr_node.node){
+            let layer=curr_node.layer;
+            result[layer]=result[layer]||new Set();
+            result[layer].add(curr_node.node.data);
+            
+            if(curr_node.node.rightChild||curr_node.node.leftChild){
+                layer=curr_node.layer+1;
+            }
+
+            if(curr_node.node.rightChild){
+                stack.push({layer,node : curr_node.node.rightChild});
+            }
+
+            if(curr_node.node.leftChild){
+                result[layer]=result[layer]||new Set();
+                result[layer].add(curr_node.node.leftChild.data);
+                curr_node={layer,node : curr_node.node.leftChild};
+            }else{
+                curr_node=stack.pop();
+            }
+        }
+
+        return result;
+    }
+
+    // console.log(layeredTree(tree.getRoot()));
+    //返回指定层的节点数
+    function getWidth(root,layer){
+        return Array.from(layeredTree(root)[layer]).length;
+    }
+
+    // console.log(getWidth(tree.getRoot(),3));
+
+    let tree2=new BinaryTree();
+    tree2.initTree("3(9,2(5,7))#");
+    console.log(tree2.height(tree2.getRoot()));
+</script>
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <input type="button" value="点击抽奖" id="btn">
+    <p>一等奖：2%，二等奖：5%，三等奖：80%，四等奖：(谢谢惠顾)</p>
+    <div>
+        <div>一等奖:<span></span></div>
+        <div>二等奖:<span></span></div>
+        <div>三等奖:<span></span></div>
+        <div>四等奖:<span></span></div>
+    </div>
+</body>
+<script type="text/javascript">
+    var oBtn=document.getElementById('btn');
+    var oSpan=document.getElementsByTagName('span');
+
+    var total=1000;
+    var fre=1000;
+    var prizeData=[0.02*total,0.03*total,0.8*total];
+    var temp=[];
+    oBtn.onclick=function(){
+        temp=[];
+        var num=0;
+        for(var i=0;i<prizeData.length;i++){
+            temp.push({iNum : 0,val : num+=prizeData[i]});
+        }
+
+        
+        for(var i=0;i<fre;i++){
+            var tval=Math.random()*total;
+
+            fnCount(tval);
+        }
+
+        var sum=0;
+        for(var i=0;i<oSpan.length;i++){
+            if(i==oSpan.length-1){
+                oSpan[i].innerHTML=total-sum;
+            }else{
+                oSpan[i].innerHTML=temp[i].iNum;
+                sum+=temp[i].iNum;
+            }
+        }
+    }
+
+    function fnCount(val){
+        for(var j=0;j<temp.length;j++){
+            if(temp[j].val>val){
+                temp[j].iNum++;
+                break;
+            }
+        }
+    }
+</script>
+</html>

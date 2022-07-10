@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #dialog{
+            width:300px;
+            position:absolute;
+            left:50%;
+            top:50%;
+            transform:translate(-50%,-50%) scale(0);
+            transition: all;
+        }
+        .show{
+            transform:translate(-50%,-50%) scale(1);
+        }
+    </style>
+</head>
+<body>
+    <div id="dialog">
+        <h1 id="title">标题</h1>
+        <p id="content">这里是内容</p>
+        <p>
+            <button id="no">取消</button>
+            <button id="yes">确认</button>
+        </p>
+    </div> 
+</body>
+<script>
+    var oBox=document.getElementById('dialog');
+    var cancel=document.getElementById('no');
+    var ok=document.getElementById('yes');
+
+    setTimeout(() => {
+        oBox.classList.add('show');
+    },3000);
+
+    var sortColors = function(nums) {
+    let elements=nums;
+    let blues=[];
+    let rads=[];
+    let withe=[];
+
+    for(var i=0;i<elements.length;i++){
+        if(elements[i]===0){
+            rads.push(elements[i].toString());
+        }
+
+        if(elements[i]===1){
+            withe.push(elements[i].toString());
+        }
+
+        if(elements[i]===2){
+            blues.push(elements[i].toString());
+        }
+    }
+    let res=rads.concat([...withe],[...blues]);
+    let result=[];
+    res.forEach(item=>{
+        result.push(Number(item));
+    })
+    
+    return result;
+};
+
+console.log(sortColors([2,0,2,1,1,0]));
+
+class Instance{
+    static ins;
+    
+    nums=0;
+
+    constructor(){
+        let instan=Object.getOwnPropertyDescriptor(Instance,'ins').value;
+        if(!instan){
+            Object.defineProperty(Instance,'ins',{
+                value : this
+            });
+        }
+        return instan;
+    }
+}
+
+Object.defineProperty(Instance,'ins',{
+    enumerable : false,
+    writable : false
+});
+
+let newInstance=new Instance();
+newInstance.nums++;
+let newInstance2=new Instance();
+newInstance2.nums++;
+console.log(newInstance,newInstance2);
+
+
+/**
+ * 寄生组合继承方法，原型继承方法中最有效的一种方案
+ * */
+function object(obj){
+    let o=Object(obj);
+    return o;
+}
+
+function instanceInf(superType,subType){
+    let propoty=object(superType.prototype);
+    propoty.constructor=subType;
+    subType.prototype=propoty;
+}
+
+function superType(name){
+    this.name=name;
+    this.colors=["red",'blue','black'];
+}
+
+superType.prototype.sayName=function(){
+    alert(this.name);
+}
+
+function subType(name,age){
+    superType.call(this,name);
+    this.age=age;
+}
+
+instanceInf(superType,subType);
+
+subType.prototype.sayAge=function(){
+    alert(this.age);
+}
+
+console.log(new subType());
+
+
+
+</script>
+</html>

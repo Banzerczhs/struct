@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>Document</title>
+    <script>
+        window.onload=function()
+        {
+            var arr=[12,6,15,23,8,10,31,41,2,50,20,7];
+            
+            function quickSort(arr){
+                if(arr.length<=1){
+                    return arr;
+                }
+                let mIndex=Math.ceil(arr.length/2);
+                let left=[];
+                let right=[];
+                let reference=arr[mIndex];
+
+                for(let i=0;i<arr.length;i++){
+                    if(arr[i]<reference){
+                        left.push(arr[i]);
+                    }else if(arr[i]>reference){
+                        right.push(arr[i]);
+                    }
+                }
+                return quickSort(left).concat(reference,quickSort(right));
+            }
+
+            console.log(quickSort(arr));
+        }
+    </script>
+</head>
+<body>
+
+</body>
+</html>

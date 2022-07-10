@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+<script src="./KPromise.js"></script>
+<script>
+    // let p1=new KPromise(function(res,rej){
+    //     console.log(222);
+    //     rej('iop');
+    // });
+
+    // let p2=p1.then((val)=>{
+    //     console.log(val);
+    // },(err)=>{
+    //     console.log('错误信息:'+err);
+    //     return {
+    //         then(res,rej){
+    //             throw new Error('error');
+    //         }
+    //     }
+    // });
+
+    // let p3=p2.catch((err)=>{
+    //     console.log(err);
+    //     throw new Error('catch error');
+    // }).catch((err)=>{
+    //     console.log(err);
+    // }).finally(()=>{
+    //     console.log('end');
+    //     return new Promise((res,rej)=>{
+    //         rej('end error countinue');
+    //     });
+    // });
+    
+    // let p1=new KPromise((res,rej)=>{
+    //     res('222');
+    // });
+
+    // let p2=new KPromise((res,rej)=>{
+    //     rej('eee');
+    // });
+
+    // let p3=new KPromise((res,rej)=>{
+    //     res('error 123');
+    // });
+
+    // KPromise.allSettled([p1,p2,p3]).then((val)=>{
+    //     console.log(val);
+    // },(err)=>{
+    //     console.log(err);
+    // })
+
+    setTimeout(() => {
+        console.log('timeout');   
+    });
+    
+    let p1=new KPromise((res,rej)=>{
+        console.log('ssss');
+        res('123');
+    }).then((val)=>{
+        console.log(val);
+    }).then(()=>{
+        console.log('223');
+    });
+
+    console.log(123);
+</script>
+</html>

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+<script>
+    function Stack(){
+        var items=[];
+        this.push=function(item){
+            items.push(item);
+        }
+
+        this.pop=function(){
+            return items.pop();
+        }
+
+        this.top=function(){
+            return items[items.length-1];
+        }
+        
+        this.isEmpty=function(){
+            return items.length===0;
+        }
+
+        this.size=function(){
+            return items.length;
+        }
+
+        this.clear=function(){
+            items=[];
+        }
+    }
+
+    let postfix_exp_operation={
+        '+' : 1,
+        '-' : 1,
+        '*' : 2,
+        '/' : 2
+    }
+
+    //中缀表达式转成后缀表达式
+    function infix_exp_2_postfix_exp(tokens){
+        let stack=new Stack();
+        let perfix_after=[];
+        for(var i=0;i<tokens.length;i++){
+            let item=tokens[i];
+            if(!isNaN(item)){
+                perfix_after.push(item);
+            }else if(item==="("){
+                stack.push(item);
+            }else if(item===")"){
+                while(stack.top()!=="("){
+                    perfix_after.push(stack.pop());
+                }
+
+                stack.pop();
+            }else{
+                while(!stack.isEmpty()&&['+','-','*','/'].indexOf(stack.top())>=0
+                &&postfix_exp_operation[stack.top()]>=postfix_exp_operation[item]){
+                    perfix_after.push(stack.pop());
+                }
+
+                stack.push(item);
+            }
+        }
+
+        while(!stack.isEmpty()){
+            perfix_after.push(stack.pop());
+        }
+
+        return perfix_after;
+    }
+
+    let str=[3];
+    let newBlob=new Blob(str);
+    console.log(newBlob.size);
+
+
+    let after_prefix=infix_exp_2_postfix_exp('1+2*3'.slice(''));
+
+    //后缀表达式转成中缀表达式
+    function after_middle(tokens){
+        let stack=new Stack();
+
+        for(var i=0;i<tokens.length;i++){
+            let item=tokens[i];
+            if(!isNaN(item)){
+                stack.push(item);
+            }else if(['+','-','*','/'].indexOf(item)>=0){
+                let val1=stack.pop();
+                let val2=stack.pop();
+                stack.push(val2+item+val1);
+            }
+        }
+
+        return stack.top();
+    }
+
+    console.log(after_middle(after_prefix));
+    
+
+</script>
+</html>

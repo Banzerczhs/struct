@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style type="text/css">
+        body,h1,h2,p,span,div,a,ul,li,ol{
+            margin: 0;
+            padding: 0;
+        }
+        ul,li,ol{list-style: none;}
+
+        #ul1{
+            margin: 120px auto;
+            overflow: hidden;
+            border:solid 1px #000000;
+            border-right: none;
+            border-bottom: none;
+            background-color: rgb(26, 25, 25);
+        }
+        #ul1 li{
+            float: left;
+            border:solid 1px #000;
+            border-left: none;
+            border-top: none;
+            text-align: center;
+            line-height: 50px;
+            background-size: contain;
+            background-position: 0 0;
+            background-repeat: no-repeat;
+        }
+        #ul1 li.box1{background-image: url(image/1.jpg);}
+        #ul1 li.box2{background-image: url(image/2.jpg);}
+        #ul1 li.box3{background-image: url(image/3.jpg);}
+        #ul1 li.box4{background-image: url(image/4.jpg);}
+        #ul1 li.box5{background-image: url(image/5.jpg);}
+        #ul1 li.box6{background-image: url(image/6.jpg);}
+    </style>
+    <script type="text/javascript">
+        window.onload=function(){
+            var oUl=document.getElementById('ul1');
+            var oli=oUl.getElementsByTagName('li');
+            var sizeLi=50;
+            var num=4;
+            var len=num*num;
+            var arr=[];
+            var arr2=[];
+            
+            function init(){
+                createLI();
+                remove();
+            }
+            init();
+
+            function createLI(){
+                for(var i=0;i<len;i++){
+                    var li=document.createElement('li');
+                    li.style.width=sizeLi+'px';
+                    li.style.height=sizeLi+'px';
+                    li.className='box'+(Math.floor(Math.random()*6+1));
+                    oUl.appendChild(li);
+                }
+                oUl.style.width=(sizeLi+1)*num+'px';
+            }
+            
+            function remove(){
+                var result=[];
+
+                function addEl(oli,size){
+                    var iNum = 0;
+                    var prevLi = oli[0];
+                    for (var i = 0; i < oli.length; i++) {
+                        if (oli[i].className == prevLi.className && i % size != 0) {
+                            iNum++;
+                        } else {
+                            if (iNum >= 2) {
+                                for (var j = 0; j <= iNum; j++) {
+                                    if(toCon(oli[i - (iNum + 1) + j])){
+                                        result.push(oli[i - (iNum + 1) + j]);
+                                    }
+                                }
+                            }
+                            iNum = 0;
+                        }
+                        prevLi = oli[i];
+                    }    
+                }
+                
+                addEl(oli,num);
+                addEl(changeXY(oli,num),num);
+                console.log(result);
+                
+                function toCon(el){
+                    for(var i=0;i<result.length;i++){
+                        if(result[i]==el){
+                            return false;
+                        }
+                    }
+                    return true;
+                }
+
+                for(var i=0;i<oli.length;i++){
+                    oli[i].style.opacity=0.3;
+                }
+
+                for(var i=0;i<result.length;i++){
+                    result[i].style.opacity=1;
+                }
+            }
+            
+            function changeXY(arr,size){
+                var newArr=[];
+                var iNum=0;
+                (function(){
+                    if(iNum==size){
+                        return;
+                    }
+
+                    for(var i=0;i<arr.length;i++){
+                        if(i%size==iNum){
+                            newArr.push(arr[i]);
+                        }
+                    }
+                    iNum++;
+
+                    arguments.callee();
+                })();
+                
+                return newArr;
+            }
+        }
+    </script>
+</head>
+<body>
+    <ul id="ul1"></ul>
+</body>
+</html>

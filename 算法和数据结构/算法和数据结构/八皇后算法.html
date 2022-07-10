@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style type="text/css">
+        body,div,p,h1,h2,a,img,span,ul,li{
+            margin: 0;
+            padding: 0;
+        }
+        li,ul,ol{list-style: none;}
+
+        #box{
+            margin: 120px auto;
+            border:solid 1px #000;
+            border-right: none;
+            border-bottom: none;
+        }
+        #box::after{
+            content: "";
+            display: block;
+            clear: both;
+        }
+        #box li{
+            float: left;
+            border:solid 1px #000;
+            border-left: none;
+            border-top: none;
+            text-align: center;
+            line-height: 50px;
+            background-size: cover;
+        }
+    </style>
+    <script type="text/javascript">
+        window.onload=function(){
+            var oBox=document.getElementById('box');
+            var oli=oBox.getElementsByTagName('li');
+            var sizeli=50;
+            var num=4;
+            var QueenArr=[];
+            var QueenArrAll=[];
+            var iCount=0;
+
+            function createLi(){
+                for(var i=0;i<num*num;i++){
+                    var li=document.createElement('li');
+                    li.style.width=sizeli+'px';
+                    li.style.height=sizeli+'px';
+                    li.index=-1;
+                    oBox.appendChild(li);
+                }
+                oBox.style.width=(sizeli+1)*num+'px';
+
+                for(var i=0;i<num;i++){
+                    for(var j=0;j<num;j++){
+                        oli[i*num+j].x=i;
+                        oli[i*num+j].y=j;
+                        oli[i*num+j].innerHTML=oli[i*num+j].index;
+                    }
+                }
+            }
+
+            function init(){
+                createLi();
+                setQueen(0);
+                console.log(iCount);
+            }
+            init();
+
+            function setQueen(iQueen){
+                if(iQueen==num){
+                    QueenArrAll.push(QueenArr.concat());
+                    // showPos();
+                    iCount++;
+                    return;
+                }
+
+                for(var i=0;i<num;i++){
+                    if(oli[iQueen*num+i].index==-1){
+                        oli[iQueen*num+i].index=iQueen;
+                        var x=oli[iQueen*num+i].x;
+                        var y=oli[iQueen*num+i].y;
+                        QueenArr.push(oli[iQueen*num+i]);
+
+                        for(var j=0;j<oli.length;j++){
+                            if(oli[j].index==-1&&(oli[j].x==x||oli[j].y==y||oli[j].x-oli[j].y==x-y||oli[j].x+oli[j].y==x+y)){
+                                oli[j].index=iQueen;
+                                oli[j].innerHTML=iQueen;
+                            }
+                        }
+
+                        setQueen(iQueen+1);
+
+                        //回溯
+                        QueenArr.pop();
+                        for(var j=0;j<oli.length;j++){
+                            if(oli[j].index==iQueen){
+                                oli[j].index=-1;
+                            }
+                        }
+                    }
+                }
+            }
+
+            function showPos(){
+                setInterval(change,2000);
+                var iNum=0;
+                change();
+                function change(){
+                    for(var i=0;i<oli.length;i++){
+                        oli[i].style.backgroundImage='none';
+                    }
+
+                    for(var j=0;j<QueenArrAll[iNum].length;j++){
+                        QueenArrAll[iNum%num][j].style.backgroundImage='url(img/'+(Math.floor(Math.random()*11+1))+'.jpg)';
+                    }
+
+                    iNum++;
+                    if(iNum>=QueenArrAll.length){
+                        iNum=0;
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body>
+    <ul id="box"></ul>
+</body>
+</html>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script type="text/javascript">
+        window.onload=function(){
+            var num=1000;
+            var random=Math.ceil(Math.random()*1000);
+            document.title=random;
+            var arr=[];
+            for(var i=0;i<num;i++){
+                arr[i]=i;
+            }
+            
+            //顺序查找
+            // function show(oArr,oRandom){
+            //     for(var i=0;i<oArr.length;i++){
+            //         if(oArr[i]==oRandom){
+            //             return oArr[i];
+            //         }
+            //     }
+            // }
+
+            //二分查找
+            function show(oArr,oRandom){
+                var startIndex=0;
+                var lastIndex=arr.length-1;
+                function change(startIndex,lastIndex){
+                    var mIndex=Math.floor((startIndex+lastIndex)/2);
+                    if(oRandom>mIndex){
+                        change(mIndex,lastIndex);
+                    }else if(oRandom<mIndex){
+                        change(startIndex,mIndex);
+                    }else{
+                        console.log(mIndex);
+                    }
+                }
+
+                change(startIndex,lastIndex);
+            }
+            show(arr,random);
+            
+        }
+    </script>
+</head>
+<body>
+    
+</body>
+</html>

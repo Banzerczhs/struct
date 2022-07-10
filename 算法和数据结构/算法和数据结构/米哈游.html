@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div></div>
+</body>
+
+<script>
+    // let arr1=[2,4];
+    // let arr2=[3,2];
+
+    // //动态规划
+    // //i>0,j>0 并且arr1[i]===arr2[j];
+    // //dp[i][j]=dp[i-1][j-1]+1;
+    // //i>0,j>0,并且arr1[i]!==arr2[j];
+    // //dp[i][j]=max(dp[i][j-1],dp[i-1][j]);
+    // function maxUncrossedLines(A,B){
+    //     let dp=new Array((A.length+1)*(B.length+1)).fill(0);
+
+    //     for(let i=1;i<=A.length;i++){
+    //         for(let j=1;j<=B.length;j++){
+    //             if(A[i-1]===B[j-1]){
+    //                 dp[i*A.length+j]=dp[(i-1)*A.length+(j-1)] + 1;
+    //             }else{
+    //                 dp[i*A.length+j] = Math.max(dp[i*A.length+(j-1)], dp[(i-1)*A.length+j]);
+    //             }
+    //         }
+    //     }
+    //     console.log(dp);
+    //     return dp[A.length*A.length+B.length];
+    // }
+    
+
+    
+    // console.log(maxUncrossedLines(arr1,arr2));
+    let str='(a(b©d)';
+    // let re=/\)|\(/g;
+
+    // let tmp;
+    // let result=[];
+    // let obj={};
+    // let strarr=str.split('');
+    // while(tmp=re.exec(str)){
+    //     result.push({
+    //         val : tmp[0],
+    //         index : tmp['index']
+    //     });
+    // }
+
+    // if(result.length>1){
+    //     for(var i=1;i<result.length;i++){
+    //         obj[result[i-1].index+result[i-1].val]={
+    //             keyValue : result[i-1],
+    //             value : result[i]
+    //         };
+    //     }
+
+    //     let reject=[];
+    //     let resolve=[];
+    //     Object.keys(obj).forEach(key=>{
+    //         if(obj[key].keyValue.val==obj[key].value.val||obj[key].keyValue.val==')'){
+    //             reject.push(obj[key]);
+    //         }else{
+    //             resolve.push(obj[key]);
+    //         }
+    //     })
+        
+    //     reject.forEach(item=>{
+    //         strarr[item.keyValue.index]='';
+    //         strarr[item.value.index]='';  
+    //     });
+    //     resolve.forEach(item=>{
+    //         strarr[item.keyValue.index]=item.keyValue.val;
+    //         strarr[item.value.index]=item.value.val;  
+    //     })
+        
+    //     console.log(strarr.join(''));
+    // }else{
+    //     result[0]&&(strarr[result[0].index]='');
+    //     console.log(strarr.join(''));
+    // }
+    
+    // console.log(str.charAt(indexs['index']-1));
+
+    let resolve=[];
+    let reject=[];
+    let strarr=str.split('');
+
+    for(let i=0;i<str.length;i++){
+        if(str[i]=='('){
+            resolve.push({
+                val : str[i],
+                index : i,
+                reference : null
+            });
+        }
+
+        if(i==0&&str[i]==')'||(str[i]==')'&&!resolve.length)){
+            reject.push({
+                val : str[i],
+                index : i
+            })
+        }else if(str[i]==')'&&resolve.length){
+            let state=false;
+            resolve.forEach(item=>{
+                if(!item.reference&&!state){
+                    state=true;
+                    item.reference={
+                        val : str[i],
+                        index : i
+                    };
+                }
+            });
+            if(!state){
+                reject.push({
+                    val : str[i],
+                    index : i
+                })
+            }
+        }
+    }
+
+    console.log(resolve,reject);
+    reject.forEach(item=>{
+        strarr[item.index]='';
+    });
+
+    resolve.forEach(item=>{
+        if(!item.reference){
+            strarr[item.index]='';
+        }
+    });
+
+    console.log(strarr.join(''));
+</script>
+</html>

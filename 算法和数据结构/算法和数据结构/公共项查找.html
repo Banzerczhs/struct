@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script type="text/javascript">
+        window.onload=function(){
+            //公共最长子串查找
+
+            //两组
+            var arr_str=['asdshowccccc','ddshoweeasdshc'];
+            function show(arr){
+                var str0=arr[0];
+                var str1=arr[1];
+                var nowEl='';
+                for(var i=0;i<str0.length;i++){
+                    for(var j=0;j<str1.length;j++){
+                        if(str0[i]==str1[j]){
+                            var k=1;
+                            nowEl+=str0[i];
+                            while((str0[j+k]&&str1[i+k])&&str0[i+k]==str1[j+k]){
+                                nowEl+=str0[i+k];
+                                k++;
+                            }
+                            nowEl+=',';
+                        }
+                    }
+                }
+
+                var result=nowEl.split(',');
+                var max=result[0];
+
+                for(var i=0;i<result.length;i++){
+                    if(result[i].length>max.length){
+                        max=result[i];
+                    }
+                }
+
+                console.log(max);
+            }
+            show(arr_str);
+            
+            //多组
+            // var arr_str=['asdshowccccc','ddshowee','asdasdshohfjdshow','adshowasdshoqwe'];
+            // function show(arr){
+            //     arr=arrSort(arr);
+            //     console.log(arr);
+            //     var startArr=arr.shift();
+            //     var whoArr=[];
+            //     var result=0;
+            //     var count=0;
+                
+            //     for(var i=0;i<startArr.length;i++){
+            //         for(var j=i+1;j<=startArr.length;j++){
+            //             whoArr.push(startArr.substring(i,j));
+            //         }
+            //     }
+            //     console.log(whoArr);
+                
+            //     for(var i=0;i<whoArr.length;i++){
+            //         for(var j=0;j<arr.length;j++){
+            //             var re=new RegExp(whoArr[i]);
+            //             var oneArr=arr[j].match(re);
+            //             if(!oneArr){
+            //                 break;
+            //             }
+            //         }
+
+            //         if(j>=arr.length){
+            //             if(whoArr[i].length>count){
+            //                 count=whoArr[i].length;
+            //                 result=whoArr[i];
+            //             }
+            //         }
+            //     }
+
+            //     console.log(result);
+            // }
+            // show(arr_str);
+
+            // function arrSort(arr){
+            //     return arr.sort(function(obj1,obj2){
+            //         return obj1.length-obj2.length;
+            //     });
+            // }
+        }
+    </script>
+</head>
+<body>
+    
+</body>
+</html>

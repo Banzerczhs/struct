@@ -1,0 +1,191 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>无标题文档</title>
+<style>
+*{ margin:0; padding:0;}
+li{ list-style:none;}
+#ul1{ height:auto; overflow:hidden; margin:20px auto; border:1px #000 solid; border-bottom:none; border-right:none;}
+#ul1 li{border:1px #000 solid; border-top:none; border-left:none; float:left;}
+#ul1 li.sty1{ background:red;}
+#ul1 li.sty2{ background:green;}
+#ul1 li.sty3{ background:blue;}
+#input1{ width:100px; position:absolute; left:50%; margin-left:-50px;}
+</style>
+</head>
+
+<body>
+<ul id="ul1">
+</ul>
+<input type="button" value="开始寻路" id="input1">
+<script>
+
+var oUl = document.getElementById('ul1');
+var oli = oUl.getElementsByTagName('li');
+var oInput = document.getElementById('input1');
+var beginLi = oUl.getElementsByClassName('sty1');
+var endLi = oUl.getElementsByClassName('sty2');
+
+var map = [
+	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+	0,0,0,0,3,3,3,3,3,3,3,0,0,0,0,0,0,0,0,0,
+	0,0,0,0,0,0,0,0,0,0,3,0,0,0,0,0,0,0,0,0,
+	0,0,0,0,3,0,3,3,3,3,3,0,0,0,0,0,0,0,0,0,
+	0,0,0,0,3,0,0,0,0,0,3,0,0,0,0,0,0,0,0,0,
+	0,0,0,0,3,0,0,0,0,0,3,0,0,0,0,0,0,0,0,0,
+	3,3,3,3,3,0,0,1,0,0,3,0,0,0,0,0,0,0,0,0,
+	0,0,0,0,3,0,0,0,0,0,3,0,0,0,0,0,0,0,0,0,
+	0,0,0,0,3,3,3,3,3,3,3,0,0,0,0,0,0,0,0,0,
+	0,0,0,0,3,0,0,0,0,0,3,0,0,0,0,0,0,0,0,0,
+	0,0,0,0,3,0,0,0,0,0,3,0,0,0,0,2,0,0,0,0,
+	0,0,0,0,3,0,0,0,0,0,3,0,0,0,0,0,0,0,0,0,
+	0,0,0,0,3,0,0,0,0,0,3,0,0,0,0,0,0,0,0,0,
+	0,0,0,0,3,3,3,3,3,3,3,0,0,0,0,0,0,0,0,0,
+	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+];
+
+//估价函数f(n)=g(n)+h(n);
+//f(n)是n节点的估价函数
+//g(n)是初始节点到n节点的实际代价
+//h(n)是n节点到目标节点的实际代价
+
+var cols = Math.sqrt(map.length);
+var sizeGird = 20;
+var openArr = [];
+var closeArr = [];
+
+function createMap(){
+	for(var i=0;i<map.length;i++){
+		var li=document.createElement('li');
+		li.style.width=sizeGird+'px';
+		li.style.height=sizeGird+'px';
+
+		if(map[i]==1){
+			li.className='sty1';
+			openArr.push(li);
+		}
+		if(map[i]==2){
+			li.className='sty2';
+		}
+		if(map[i]==3){
+			li.className='sty3';
+			closeArr.push(li);
+		}
+		oUl.appendChild(li);
+	}
+
+	oUl.style.width=cols*(sizeGird+1)+'px';
+}
+createMap();
+
+oInput.onclick=function(){
+	openFn();
+}
+
+function openFn(){
+	console.log(openArr);
+	var nowLi=openArr.shift();
+
+	if(nowLi==endLi[0]){
+		showLine();
+		return;
+	}
+
+	closeFn(nowLi);
+
+	findLi(nowLi);
+
+	openArr.sort(function(li1,li2){
+		return li1.num-li2.num;
+	});
+
+	openFn();
+}
+
+function closeFn(nowLi){
+	closeArr.push(nowLi);
+}
+
+function findLi(nowLi){
+	var result=[];
+	for(var i=0;i<oli.length;i++){
+		if(filterLi(oli[i])){
+			result.push(oli[i]);
+		}
+	}
+
+	function filterLi(li){
+		for(var i=0;i<closeArr.length;i++){
+			if(li==closeArr[i]){
+				return false;
+			}
+		}
+
+		for(var i=0;i<openArr.length;i++){
+			if(li==openArr[i]){
+				return false;
+			}
+		}
+		return true;
+	}
+
+	for(var i=0;i<result.length;i++){
+		if(Math.abs(nowLi.offsetLeft-result[i].offsetLeft)<=sizeGird+1&&Math.abs(nowLi.offsetTop-result[i].offsetTop)<=sizeGird+1){
+			result[i].num=f(result[i]);
+			result[i].parent=nowLi;
+			openArr.push(result[i]);
+		}
+	}
+}
+
+function showLine(){
+	var result=[];
+	var lastLi=closeArr.pop();
+	var iNum=0;
+	findParent(lastLi);
+	function findParent(nodeLi){
+		if(nodeLi==beginLi[0]){
+			return;
+		}
+		result.unshift(nodeLi);
+
+		findParent(nodeLi.parent);
+	}
+
+	var prev=result[0];
+	var timer=setInterval(function(){
+		result[iNum].style.backgroundColor='red';
+		prev=result[iNum];
+		iNum++;
+		if(iNum==result.length){
+			clearInterval(timer);
+		}
+	},100);
+}
+function f(nowLi){
+	return g(nowLi)+h(nowLi);
+}
+
+function g(nowLi){
+	var a=Math.pow(beginLi[0].offsetLeft-nowLi.offsetLeft,2);
+	var b=Math.pow(beginLi[0].offsetTop-nowLi.offsetTop,2);
+
+	return Math.sqrt(a+b);
+}
+
+function h(nowLi){
+	var a=Math.pow(nowLi.offsetLeft-endLi[0].offsetLeft,2);
+	var b=Math.pow(nowLi.offsetTop-endLi[0].offsetTop,2);
+
+	return Math.sqrt(a+b);
+}
+
+</script>
+</body>
+</html>

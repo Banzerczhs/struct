@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script type="text/javascript">
+        window.onload=function(){
+
+            function List(){
+                function Node(data){
+                    this.data=data;
+                    this.next=null;
+                }
+
+                var head=null;
+                var tail=null;
+                var length=0;
+
+                this.append=function(data){
+                    let newNode=new Node(data);
+                    if(!head){
+                        head=newNode;
+                        tail=newNode;
+                    }else{
+                        tail.next=newNode;
+                        tail=newNode;
+                    }
+                    length+=1;
+                }
+
+                this.print=function(){
+                    let currentNode=head;
+                    while(currentNode){
+                        console.log(currentNode.data);
+                        currentNode=currentNode.next;
+                    }
+                }
+
+                this.getNode=function(index){
+                    if(index<0||index>length){
+                        return null;
+                    }
+                    let currentNode=head;
+                    while(index-->0){
+                        currentNode=currentNode.next;
+                    }
+                    return currentNode;
+                }
+            }
+
+            let myList=new List();
+
+            myList.append(1);
+            myList.append(2);
+            myList.append(3);
+            console.log(myList.getNode(1));
+        }
+    </script>
+</head>
+<body>
+    
+</body>
+</html>

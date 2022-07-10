@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script type="text/javascript">
+        window.onload=function(){
+            
+
+            //01背包
+            //动态规划算法
+            var M = 5;
+            var W = 16;
+            var arrP = [4, 5, 10, 11, 13];
+            var arrW = [3, 4, 7, 8, 9];
+            function show(W,M,arrP,arrW){
+                var result=[];
+                for(var i=0;i<=M;i++){
+                    result[i]=[];
+                    for(var j=0;j<=W;j++){
+                        if(i==0){
+                            result[i][j]=0;
+                        }else if(arrW[i-1]>j){
+                            result[i][j]=result[i-1][j];
+                        }else{
+                            result[i][j]=Math.max(arrP[i-1]+result[i-1][j-arrW[i-1]],result[i-1][j]);
+                        }
+                    }
+                }
+
+                console.log(result);
+                return result[i-1][j-1];
+            }
+
+            console.log(show(W,M,arrP,arrW));
+
+            /*
+                arrP=[4,5,10,11];
+                arrW=[3,4,7,8];
+                
+                M=0     0 0 0 0...;
+                M=1     0 0 0 4 4 4 4 4 4...;
+                M=2     0 0 0 4 5 5 5 9.....;
+                M=3     0 0 0 4 5 5 5 10 10 10 14...
+                M=4     0 0 0 4 5 5 5 10 11 11 14 15 16....
+            */    
+
+            //部分背包
+            //体积和价值可拆开 
+            
+            // var M=5;
+            // var W=16;
+            // var arrP=[4,5,10,11,12];
+            // var arrW=[3,4,7,8,9];
+            // function show(W,M,arrP,arrW){
+            //     var whoArr=[];
+            //     var result=0;
+            //     for(var i=0;i<M;i++){
+            //         whoArr[i]={p : arrP[i],w : arrW[i],r : arrP[i]/arrW[i]};
+            //     }
+
+            //     whoArr.sort(function(obj1,obj2){
+            //         return obj2.r-obj1.r;
+            //     });
+                
+            //     for(var i=0;i<whoArr.length;i++){
+            //         if(whoArr[i].w<=W){
+            //             result+=whoArr[i].p;
+            //             W-=whoArr[i].w;
+            //         }else{
+            //             result+=W/whoArr[i].w*whoArr[i].p;
+            //             break;
+            //         }
+            //     }
+
+            //     return result;
+            // }
+            // console.log(show(W,M,arrP,arrW).toFixed(2));
+        }
+    </script>
+</head>
+<body>
+    
+</body>
+</html>

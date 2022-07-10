@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+<script>
+    function Queue(){
+        var items=[];
+
+        this.enqueue=function(item){
+            items.push(item);
+        }
+
+        this.dequeue=function(){
+            return items.shift();
+        }
+
+        this.head=function(){
+            return items[0];
+        }
+
+        this.tail=function(){
+            return items[items.length-1];
+        }
+
+        this.isEmpty=function(){
+            return items.length===0;
+        }
+
+        this.size=function(){
+            return items.length;
+        }
+
+        this.clear=function(){
+            items=[];
+        }
+    }
+
+    // function Stack(){
+    //     let queue1=new Queue();
+    //     let queue2=new Queue();
+
+    //     this.push=function(item){
+    //         if(queue1.isEmpty()){
+    //             queue1.enqueue(item);
+    //         }else{
+    //             queue1.enqueue(item);
+    //             let tmpVal=queue1.dequeue();
+    //             if(!queue2.isEmpty()){
+    //                 let que2=queue2.dequeue();
+    //                 queue2.enqueue(tmpVal);
+    //                 queue2.enqueue(que2);
+    //             }else{
+    //                 queue2.enqueue(tmpVal);
+    //             }
+    //         }
+    //     }
+
+    //     this.pop=function(){
+    //         let result=queue1.dequeue();
+    //         if(!queue2.isEmpty()){
+    //             let tmpVal=queue2.dequeue();
+    //             queue1.enqueue(tmpVal);
+    //         }
+    //         return result;
+    //     }
+
+    //     this.top=function(){
+    //         return queue1.head();
+    //     }
+    // }
+
+    // let stack=new Stack();
+
+    // function Stack(){
+    //     var items=[];
+    //     this.push=function(item){
+    //         items.push(item);
+    //     }
+
+    //     this.pop=function(){
+    //         return items.pop();
+    //     }
+
+    //     this.top=function(){
+    //         return items[items.length-1];
+    //     }
+        
+    //     this.isEmpty=function(){
+    //         return items.length===0;
+    //     }
+
+    //     this.size=function(){
+    //         return items.length;
+    //     }
+
+    //     this.clear=function(){
+    //         items=[];
+    //     }
+    // }
+
+    // function Queue(){
+    //     let stack1=new Stack();
+    //     let stack2=new Stack();
+
+    //     this.enqueue=function(item){
+    //         if(!stack1.isEmpty()){
+    //             let lastVal=stack1.pop();
+    //             if(!stack2.isEmpty()){
+    //                 let stack2Val=stack2.pop();
+    //                 stack2.push(lastVal);
+    //                 stack2.push(stack2Val);
+    //             }else{
+    //                 stack2.push(lastVal);
+    //             }
+    //         }
+    //         stack1.push(item);
+    //     }
+
+    //     this.dequeue=function(){
+    //         if(!stack2.isEmpty()){
+    //             return stack2.pop()
+    //         }else{
+    //             return stack1.pop();
+    //         }
+    //     }
+
+    //     this.head=function(){
+    //         if(!stack2.isEmpty()){
+    //             return stack2.top()
+    //         }else{
+    //             return stack1.top();
+    //         }
+    //     }
+    // }
+
+    // let queue=new Queue();
+
+    // queue.enqueue(1);
+    // console.log(queue.dequeue());
+    // queue.enqueue(2);
+    // console.log(queue.head());
+    // console.log(queue.dequeue());
+    // queue.enqueue(1);
+    // console.log(queue.head());
+
+    let map=[
+        [0, 0 , 0 , 0 , 0 , 0],
+        [0,'s', 0 , 1 , 0 , 0],
+        [0, 0 , 0 , 1 , 0 , 0],
+        [0, 0 , 0 , 0 , 0 , 0],
+        [0, 0 , 1 , 0 , 0 , 0],
+        [0, 0 , 1 , 0 , 0 , 0]
+    ];
+
+    let start=[1,1];
+    let end=[2,4];
+    
+    let pre=2;
+    let exploreDot=new Queue();
+    let footPrint=[];
+    exploreDot.enqueue([start]);
+    while(true){
+        let result=[];
+        let currentDot=exploreDot.dequeue();
+        if(currentDot.filter(dot=>(dot[0]==end[0])&&(dot[1]==end[1])).length){
+            footPrint.pop();
+            currentDot.forEach(dot=>{
+                map[dot[0]][dot[1]]=0;
+            });
+            break;
+        };
+        for(var i=0;i<currentDot.length;i++){
+            let item=currentDot[i];
+            //首先判断上方点
+            if(map[item[0]-1]&&map[item[0]-1][item[1]]==0){
+                map[item[0]-1][item[1]]=pre;
+                result.push([item[0]-1,item[1]]);
+            }
+            //判断下点
+            if(map[item[0]+1]&&map[item[0]+1][item[1]]==0){
+                map[item[0]+1][item[1]]=pre;
+                result.push([item[0]+1,item[1]]);
+            }
+            //判断左点
+            if(!isNaN(map[item[0]][item[1]-1])&&map[item[0]][item[1]-1]==0){
+                map[item[0]][item[1]-1]=pre;
+                result.push([item[0],item[1]-1]);
+            }
+            //判断右点
+            if(!isNaN(map[item[0]][item[1]+1])&&map[item[0]][item[1]+1]==0){
+                map[item[0]][item[1]+1]=pre;
+                result.push([item[0],item[1]+1]);
+            }
+        }
+        pre++;
+        exploreDot.enqueue(result);
+        footPrint.push(result);
+    }
+    map[end[0]][end[1]]='e';
+    
+    let result=[end];
+    let line=[];
+    while(true){
+        let px=footPrint.pop()[0];
+        let layerNum=map[px[0]][px[1]];
+        let item=result[result.length-1];
+        line.push(item);
+        if(map[item[0]-1]&&map[item[0]-1][item[1]]==layerNum){
+            // map[item[0]-1][item[1]]='↑';
+            result.push([item[0]-1,item[1]]);
+        }
+        //判断下点
+        if(map[item[0]+1]&&map[item[0]+1][item[1]]==layerNum){
+            // map[item[0]+1][item[1]]='↓';
+            result.push([item[0]+1,item[1]]);
+        }
+        //判断左点
+        if(!isNaN(map[item[0]][item[1]-1])&&map[item[0]][item[1]-1]==layerNum){
+            // map[item[0]][item[1]-1]='←';
+            result.push([item[0],item[1]-1]);
+        }
+        //判断右点
+        if(!isNaN(map[item[0]][item[1]+1])&&map[item[0]][item[1]+1]==layerNum){
+            // map[item[0]][item[1]-1]='→';
+            result.push([item[0],item[1]+1]);
+        }
+
+        if(footPrint.length==0){
+            break;
+        }
+    }
+    line.push(result.pop());
+    console.log(line);
+    console.log(map);
+</script>
+</html>

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div></div>
+</body>
+<script>
+    function Stack(){
+        var items=[];
+        this.push=function(item){
+            items.push(item);
+        }
+
+        this.pop=function(){
+            return items.pop();
+        }
+
+        this.top=function(){
+            return items[items.length-1];
+        }
+        
+        this.isEmpty=function(){
+            return items.length===0;
+        }
+
+        this.size=function(){
+            return items.length;
+        }
+
+        this.clear=function(){
+            items=[];
+        }
+    }
+
+    
+
+    let stack=new Stack();
+
+    function Min_stack(){
+
+        let data_stack=new Stack();
+        let min_stack=new Stack();
+
+        this.push=function(item){
+            data_stack.push(item);
+            if(min_stack.isEmpty()||item<min_stack.top()){
+                // min_stack.pop();
+                min_stack.push(item);
+            }else{
+                min_stack.push(min_stack.top());
+            }
+        }
+
+        this.min=function(){
+            return min_stack.top();
+        }
+
+        this.pop=function(){
+            data_stack.pop();
+        }
+    }
+
+    let minstack=new Min_stack();
+
+    minstack.push(3);
+    minstack.push(8);
+    minstack.push(1);
+    minstack.pop();
+    minstack.push(7);
+    minstack.pop();
+    console.log(minstack.min());
+    
+</script>
+</html>

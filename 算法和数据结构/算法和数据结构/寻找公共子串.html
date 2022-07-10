@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+<script>
+    let str1='GHCBABABGHJ';
+    let str2='BDyuABABDcAF';
+    
+    let result;
+    let state=[];
+    let num=1;
+    let str='';
+
+    while(true){
+        let temp=false;
+        let arr=new Set();
+        for(let i=0;i<str1.length;i++){
+            str=(i+num)<=str1.length?str1.slice(i,i+num):null;
+            if(str2.indexOf(str)!=-1){
+                temp=true;
+                arr.add(str);
+            }
+        }
+        console.log(arr);
+
+        if(temp){
+            state.push({
+                [num] : arr
+            });
+        }else{
+            break;
+        }
+
+        num++;
+    }
+
+    console.log(state[state.length-1]);
+</script>
+</html>

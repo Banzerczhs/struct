@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+<script type="text/javascript">
+    Function.prototype.customBind=function(thisArg,...list){
+        let self=this;
+
+        let Bind=function(...arg2){
+            let thisArgself=this instanceof Bind ? this:thisArg;
+            self.apply(thisArgself,[...list,...arg2]);
+        }
+
+        Bind.prototype=Object.create(self.prototype);
+        Bind.prototype.constructor=self;
+
+        return Bind;
+    }
+
+    function func(...arg){
+        console.log(this);
+        console.log(arg);
+    }
+
+    func.prototype.miaov=function(){
+        console.log(123);
+    }
+
+    // let newfunc=func.bind({a:1},1,2,3,4,5);
+    // let f1=new newfunc();
+
+    // console.log(f1);
+    
+    // console.log('------------------------------');
+
+    let newfunc2=func.customBind({a : 1},1,2,3,4,5).customBind({b:12},1,2,3,4,5);
+    let f2=new newfunc2();
+
+    console.log(f2.constructor);
+</script>
+</html>

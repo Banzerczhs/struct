@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+<script>
+    function Node(data){
+        this.data=data;
+        this.next=null;
+        this.pre_node=null;
+    }
+
+    //合并链表,两个链表呈有序状态排列,从小到大
+    function mergeLink(list1,list2){
+        let cur1=list1.head;
+        let cur2=list2.head;
+
+        let merge_head=null;
+        let merge_tail=null;
+
+        let min=null;
+        while(cur1 && cur2){
+            if(cur1.data>cur2.data){
+                min=cur2.data;
+                cur2=cur2.next;
+            }else{
+                min=cur1.data;
+                cur1=cur1.next;
+            }
+
+            let newNode=new Node(min);
+            if(!merge_head){
+                merge_head=newNode;
+                merge_tail=newNode;
+            }else{
+                merge_tail.next=newNode;
+                merge_tail=newNode;
+            }
+        }
+
+        let rest_link=null;
+        if(cur1){
+            rest_link=cur1;
+        }
+
+        if(cur2){
+            rest_link=cur2;
+        }
+
+        while(rest_link){
+            let newNode=new Node(rest_link.data);
+            merge_tail.next=newNode;
+            merge_tail=newNode;
+            rest_link=rest_link.next;
+        }
+
+        return merge_head;
+    }
+
+    //双向链表的实现
+    function DoubleLink(){
+        let head=null;
+        let tail=null;
+        
+        let length=0;
+        this.append=function(data){
+            let newNode=new Node(data);
+            if(!head){
+                head=newNode;
+                tail=newNode;
+            }else{
+                newNode.pre_node=tail;
+                tail.next=newNode;
+                tail=newNode;
+            }
+
+            length+=1;
+        }
+
+        this.insert=function(index,data){
+            let newNode=new Node(data);
+            let currentNode=this.getNode(index-1);
+            newNode.next=currentNode.next;
+            currentNode.next=newNode;
+        }
+
+        this.getNode=function(index){
+            let currentNode=head;
+
+            let nodeIndex=index;
+            while(nodeIndex-->1){
+                currentNode=currentNode.next;
+            }
+
+            return currentNode;
+        }
+
+        this.getParentNode=function(index){
+            let currentNode=this.getNode(index);
+            return currentNode.pre_node.data;
+        }
+
+        this.print=function(){
+            let currentNode=head;
+            while(currentNode){
+                console.log(currentNode.data);
+                currentNode=currentNode.next;
+            }
+        }
+    }
+
+    let dlink=new DoubleLink();
+
+    dlink.append(1);
+    dlink.append(2);
+    dlink.append(3);
+    dlink.append(4);
+    dlink.print();
+    console.log(dlink.getParentNode(3));
+</script>
+</html>

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script type="text/javascript">
+        window.onload=function(){
+            
+            function Node(element){
+                this.element=element;
+                this.next=null;
+            }
+            
+            function Llist(){
+                this.head=new Node('head');
+                this.head.next=this.head;
+                this.length=0;
+            }
+
+            Llist.prototype.oFind=function(item){
+                var currNode=this.head;
+                while(currNode.next!=null){
+                    if(currNode.element==item){
+                        break;
+                    }
+                    currNode=currNode.next;
+                }
+
+                return currNode;
+            }
+            
+            Llist.prototype.findPrevNode=function(item){
+                var currNode=this.head;
+                while(currNode.next!=null){
+                    if(currNode.next.element==item){
+                        break;
+                    }
+                    currNode=currNode.next;
+                }
+
+                return currNode;
+            }
+            
+            Llist.prototype.removeNode=function(item){
+                var currNode=this.oFind(item);
+                var prevNode=this.findPrevNode(item);
+                prevNode.next=currNode.next;
+                currNode.next=null;
+                this.length--;
+            }
+
+            Llist.prototype.insert=function(element,item){
+                var newNode=new Node(element);
+                var currNode=this.oFind(item);
+                newNode.next=currNode.next;
+                currNode.next=newNode;
+                this.length++;
+            }
+
+            Llist.prototype.Display=function(){
+                var result=[];
+                var currNode=this.head.next;
+                while(currNode){
+                    if(currNode.element=='head'){
+                        break;
+                    }
+                    result.push(currNode.element);
+                    currNode=currNode.next;
+                }
+
+                return result;
+            }
+            
+            function killGame(num,stop){
+                var people=new Llist();
+                people.insert(1,'head');
+                for(var i=1;i<num;i++){
+                    people.insert(i+1,i);
+                }
+                
+                var iNum=0;
+                var dir='head';
+                start();
+                function start(){
+                    if(people.length<stop){
+                        return;
+                    }
+
+                    dir=people.oFind(dir).next.element;
+                    if(dir=='head'){
+                        dir=people.oFind(dir).next.element;
+                    }
+                    iNum++;
+                    if(iNum==stop){
+                        var removeDir=dir;
+                        dir=people.findPrevNode(dir).element;
+                        people.removeNode(removeDir);
+                        iNum=0;
+                    }
+                    start();          
+                }
+
+                console.log('最终存活的位置为:'+people.Display());
+            }
+            killGame(56,4);
+
+        }
+    </script>
+</head>
+<body>
+    
+</body>
+</html>

@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+<script>
+    function MinHeap(size){
+        let heap=new Array(size).fill(null);
+        let curr_size=0;
+        let max_size=size;
+
+        function shiftDown(index,m){
+            let parent_index=index;
+            let min_child_index=parent_index*2+1;
+
+            while(min_child_index<=m){
+                if(heap[min_child_index+1]&&heap[min_child_index]>heap[min_child_index+1]){
+                    min_child_index=min_child_index+1;
+                }
+
+                if(heap[min_child_index]>=heap[parent_index]){
+                    break;
+                }else{
+                    let tmp=heap[parent_index];
+                    heap[parent_index]=heap[min_child_index];
+                    heap[min_child_index]=tmp;
+                    parent_index=min_child_index;
+                    min_child_index=2*min_child_index+1;
+                }
+            }
+        }
+        
+        this.init=function(arr){
+            heap=new Array(max_size).fill(null);
+            let maxSize=arr.length;
+            curr_size=arr.length;
+            for(let i=0;i<arr.length;i++){
+                heap[i]=arr[i];
+            }
+
+            let curr_index=Math.floor((maxSize-2)/2);
+            while(curr_index>=0){
+                shiftDown(curr_index,maxSize-1);
+                curr_index--;
+            }
+
+            return heap;
+        }
+
+        function shiftUp(index,curr_index,item){
+            let parent_index=index;
+
+            if(curr_index==0){
+                heap[curr_index]=item;
+                return;
+            }
+            
+            while(curr_index>0){
+                if(heap[parent_index]&&heap[parent_index]>item){
+                    let tmp=heap[parent_index];
+                    heap[parent_index]=item;
+                    heap[curr_index]=tmp;
+                    curr_index=parent_index;
+                    parent_index=Math.ceil((parent_index-2)/2);
+                }else{
+                    heap[curr_index]=item;
+                    break;
+                }
+            }
+        }
+
+        this.insert=function(item){
+            let curr_index=curr_size;
+            if(curr_index<max_size){
+                shiftUp(Math.ceil((curr_index-2)/2),curr_index,item);
+                curr_size++;
+                return true;
+            }else{
+                return false;
+            }
+        }
+
+        this.remove=function(){
+            if(!heap.length){
+                return false;
+            }
+
+            let lastChild=heap[curr_size-1];
+            let firstChild=heap[0];
+            heap[0]=lastChild;
+            heap[curr_size-1]=null;
+            shiftDown(0,curr_size-2);
+            curr_size--;
+
+            return firstChild;
+        }
+
+        this.display=function(){
+            console.log(heap);
+        }
+
+        this.size=function(){
+            return curr_size;
+        }
+    }
+
+    let heapArr=[1,4,8,3,6];
+
+    let minHeap=new MinHeap(20);
+    // console.log(minHeap.init(heapArr));
+    // minHeap.insert(2);
+    // minHeap.insert(4);
+    // minHeap.insert(0);
+    // minHeap.display();
+    // console.log(minHeap.remove(0));
+    // minHeap.display();
+
+    function MaxHeap(size){
+        let heap=new Array(size).fill(null);
+        let curr_size=0;
+        let max_size=size;
+
+        function shiftDown(index,m){
+            let parent_index=index;
+            let max_child_index=parent_index*2+1;
+
+            while(max_child_index<=m){
+                if(heap[max_child_index+1]&&heap[max_child_index]<heap[max_child_index+1]){
+                    max_child_index=max_child_index+1;
+                }
+
+                if(heap[max_child_index]<=heap[parent_index]){
+                    break;
+                }else{
+                    let tmp=heap[parent_index];
+                    heap[parent_index]=heap[max_child_index];
+                    heap[max_child_index]=tmp;
+                    parent_index=max_child_index;
+                    max_child_index=2*max_child_index+1;
+                }
+            }
+        }
+        
+        this.init=function(arr){
+            let maxSize=arr.length;
+            curr_size=arr.length;
+            for(let i=0;i<arr.length;i++){
+                heap[i]=arr[i];
+            }
+
+            let curr_index=Math.floor((maxSize-2)/2);
+            while(curr_index>=0){
+                shiftDown(curr_index,maxSize-1);
+                curr_index--;
+            }
+
+            return heap;
+        }
+
+        this.remove=function(){
+            if(!heap.length){
+                return false;
+            }
+
+            let lastChild=heap[curr_size-1];
+            let firstChild=heap[0];
+            heap[0]=lastChild;
+            heap[curr_size-1]=null;
+            shiftDown(0,curr_size-2);
+            curr_size--;
+
+            return firstChild;
+        }
+    }
+
+    let heapArr2=[9,17,65,23,45,78,87,53];
+
+    let maxHeap=new MaxHeap(20);
+    console.log(maxHeap.init(heapArr2));
+    
+    //利用最小堆进行从小到大排序
+    let arr=[53,17,78,9,45,65,87,23];
+    let newMinHeap=new MinHeap(arr.length);
+    newMinHeap.init(arr);
+    let sortArr=[];
+    let len=newMinHeap.size();
+    for(var i=0;i<len;i++){
+        sortArr.push(newMinHeap.remove());
+    }
+    console.log(sortArr);
+
+    function insertTok(k,heap,list){
+        let id=0;
+        while(id<k){
+            heap.insert(list[id]);
+            id++;
+        }
+    }
+
+    //利用最小堆返回一个集合中最大的k个值
+    function TopK(arr,k){
+        let kHeap=new MinHeap(k);
+        let list=[...arr];
+        insertTok(k,kHeap,list);
+        
+        for(var i=k;i<list.length;i++){
+            let heapTop=kHeap.remove();
+            if(list[i]>heapTop){
+                kHeap.insert(list[i]);
+            }else{
+                kHeap.insert(heapTop);
+            }
+        }
+
+        return kHeap;
+    }
+
+    // TopK(arr,3).display();
+    //利用最大堆返回一个集合中最大的k个值
+    function Topk2(arr,k){
+        let kHeap=new MaxHeap(arr.length);
+        kHeap.init(arr);
+        let result=[];
+        for(var i=0;i<k;i++){
+            result[i]=kHeap.remove();
+        }
+
+        return result;
+    }
+
+    console.log(Topk2(arr,3));
+
+    //哈夫曼树
+    // function HafumanTree(){
+
+    // }
+</script>
+</html>

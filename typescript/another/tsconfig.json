@@ -1,0 +1,18 @@
+{
+    "files": [
+        // 指定编译文件是src目录下的a.ts文件
+        "./middle_num.ts",
+        "./max_gap.ts",
+        "./matrix.ts",
+        "./chain.ts"
+    ],
+    "include": [
+        "./types/*"
+    ],
+    "compilerOptions": {
+        "baseUrl": "./",
+        "outDir": "./build",
+        "target":"ES6",
+        "module": "commonjs"
+    }
+}

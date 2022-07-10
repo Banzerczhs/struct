@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script type="text/javascript">
+        window.onload=function(){
+            var arr=['A','C','B','D'];
+            
+            function A(arr,num){
+                var resultArr=[];
+                var resultNum=0;
+                var iNum=1;
+
+                if(iNum==num){
+                    arr.push(num);
+                    return arr;
+                }
+                function change(arr,iNum,str){
+                    var cloneArr=[];
+                    for(var i=0;i<arr.length;i++){
+                        cloneArr=arr.concat();
+                        var result=str;
+                        result+=cloneArr.splice(i,1);
+                        if(iNum==num){
+                            resultNum+=cloneArr.length;
+                            for(var j=0;j<cloneArr.length;j++){
+                                resultArr.push(result+cloneArr[j]);
+                            }
+                        }else{
+                            change(cloneArr,iNum+1,result);
+                        }
+                    }
+                }
+                change(arr,iNum+1,'');
+                
+                resultArr.push(resultNum);
+                return resultArr;
+            }
+            
+            console.log(A(arr,2));
+        }
+    </script>
+</head>
+<body>
+    
+</body>
+</html>
