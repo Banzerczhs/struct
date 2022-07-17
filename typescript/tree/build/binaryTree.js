@@ -160,6 +160,14 @@ class BinaryTree {
             return parent;
         }
     }
+    getLevel(node) {
+        let level = 0;
+        while (node) {
+            level++;
+            node = node.left;
+        }
+        return level;
+    }
 }
 exports.BinaryTree = BinaryTree;
 // let tree=new BinaryTree('A(B(D,F),J(H(K,L),I))#');
