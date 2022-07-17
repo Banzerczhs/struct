@@ -161,6 +161,15 @@ export class BinaryTree{
             return parent;
         }
     }
+
+    getLevel(node:BinaryNode):number{
+        let level=0;
+        while(node){
+            level++;
+            node=node.left;
+        }
+        return level;
+    }
 }
 
 // let tree=new BinaryTree('A(B(D,F),J(H(K,L),I))#');

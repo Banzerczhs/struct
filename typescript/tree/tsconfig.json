@@ -4,7 +4,9 @@
         "./binaryTree.ts",
         "./origami.ts",
         "./isBalanceTree.ts",
-        "./isBstTree.ts"
+        "./isBstTree.ts",
+        "./isCompletelyTree.ts",
+        "./getNodeNum.ts"
     ],
     "include": [
         "./types/*"
