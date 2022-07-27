@@ -1,0 +1,15 @@
+{
+    "files": [
+        // 指定编译文件是src目录下的a.ts文件
+        "./chain.ts"
+    ],
+    "include": [
+        "./types/*"
+    ],
+    "compilerOptions": {
+        "baseUrl": "./",
+        "outDir": "./build",
+        "target":"ES6",
+        "module": "commonjs"
+    }
+}
