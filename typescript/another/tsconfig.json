@@ -4,7 +4,8 @@
         "./middle_num.ts",
         "./max_gap.ts",
         "./matrix.ts",
-        "../chain/chain.ts"
+        "../chain/chain.ts",
+        "./isLand.ts"
     ],
     "include": [
         "./types/*"
