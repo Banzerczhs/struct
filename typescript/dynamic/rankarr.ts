@@ -1,3 +1,6 @@
+//打印字符串全排列，两种方案
+
+//方案一
 function printStr(str:Array<string>,k:number){
     if(k==str.length){
         let chars='';
@@ -20,6 +23,7 @@ function printStr(str:Array<string>,k:number){
     }
 }
 
+//方案二
 function rankArr(str:Array<string>,cur:Array<string>,res:string){
     if(res.length==str.length){
         console.log(res);

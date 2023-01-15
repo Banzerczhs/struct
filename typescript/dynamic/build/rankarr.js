@@ -1,3 +1,5 @@
+//打印字符串全排列，两种方案
+//方案一
 function printStr(str, k) {
     if (k == str.length) {
         let chars = '';
@@ -16,6 +18,7 @@ function printStr(str, k) {
         str[i] = t;
     }
 }
+//方案二
 function rankArr(str, cur, res) {
     if (res.length == str.length) {
         console.log(res);

@@ -1,3 +1,4 @@
+//打印字符串子序列
 function strSequence(arr, i, w) {
     if (i == arr.length) {
         console.log(w);
