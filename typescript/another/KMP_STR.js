@@ -1,3 +1,6 @@
+/**
+ * KMP字符串匹配算法，时间复杂度为O(n)
+ */
 var KMP = /** @class */ (function () {
     function KMP(str1, str2) {
         this.str1 = str1;
@@ -50,6 +53,6 @@ var KMP = /** @class */ (function () {
     return KMP;
 }());
 var str1 = 'aabcsaeopiwuyqxjkal'.split('');
-var str2 = 'csaeopwwe'.split('');
+var str2 = 'csaeo'.split('');
 var kmp = new KMP(str1, str2);
 console.log(kmp.indexOf());

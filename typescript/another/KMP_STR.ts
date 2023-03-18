@@ -57,8 +57,10 @@ class KMP{
 }
 
 let str1='aabcsaeopiwuyqxjkal'.split('');
-let str2='csaeopwwe'.split('');
+let str2='csaeo'.split('');
 
 let kmp=new KMP(str1,str2);
 
 console.log(kmp.indexOf());
+
+export default {};

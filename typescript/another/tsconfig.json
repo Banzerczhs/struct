@@ -5,8 +5,7 @@
         "./max_gap.ts",
         "./matrix.ts",
         "../chain/chain.ts",
-        "./isLand.ts",
-        "./lcs.ts"
+        "./isLand.ts"
     ],
     "include": [
         "./types/*"
